@@ -9,7 +9,7 @@ export default function Home() {
       <MaxWidthWrapper>
         <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Your marketplace for premium{" "}
+            Your space for premium{" "}
             <span className="text-blue-600">digital courses</span>.
           </h1>
           <p className="mt-6 text-lg max-w-prose text-muted-foreground">
@@ -21,7 +21,9 @@ export default function Home() {
             <Link href="/sign-up" className={buttonVariants()}>
               Register now
             </Link>
-            <Button variant="ghost">Explore Courses &rarr;</Button>
+            <Link href="/courses">
+              <Button variant="ghost">Explore Courses &rarr;</Button>
+            </Link>
           </div>
         </div>
         <div className="flex justify-center">

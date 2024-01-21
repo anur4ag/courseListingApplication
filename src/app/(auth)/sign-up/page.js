@@ -10,6 +10,11 @@ import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const Page = () => {
   const AuthCredentialsValidator = z.object({
@@ -29,7 +34,19 @@ const Page = () => {
   });
 
   const onSubmit = ({ email, password }) => {
-    console.log(email, password);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        signInWithEmailAndPassword(auth, email, password).catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   return (

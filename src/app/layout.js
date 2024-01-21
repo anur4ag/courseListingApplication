@@ -3,6 +3,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner";
+import StoreProvider from "./redux/StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,16 +14,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={cn("relative h-full font-sans antialiased", inter.className)}
-      >
-        <main className="relative flex flex-col min-h-screen">
-          <Navbar />
-          <div className="flex-grow flex-1">{children}</div>
-        </main>
-        <Toaster position="top-center" richColors />
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body
+          className={cn(
+            "relative h-full font-sans antialiased",
+            inter.className
+          )}
+        >
+          <main className="relative flex flex-col min-h-screen">
+            <Navbar />
+            <div className="flex-grow flex-1">{children}</div>
+          </main>
+          <Toaster position="top-center" richColors />
+        </body>
+      </html>
+    </StoreProvider>
   );
 }
