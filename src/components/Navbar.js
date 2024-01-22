@@ -2,6 +2,7 @@ import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { Icons } from "./Icons";
 import { buttonVariants } from "./ui/button";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const user = null;
@@ -55,7 +56,7 @@ const Navbar = () => {
                       aria-hidden="true"
                     ></span>
                   ) : null}
-{/* 
+                  {/* 
                   {user ? null : (
                     <div className="flex lg:ml-6">
                       <span

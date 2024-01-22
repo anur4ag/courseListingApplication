@@ -15,8 +15,14 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { loginUser, setLoading } from "../../redux/features/userSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import withoutAuth from "@/components/withoutAuth";
 
 const Page = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const AuthCredentialsValidator = z.object({
     email: z.string().email(),
     password: z
@@ -36,11 +42,29 @@ const Page = () => {
   const onSubmit = ({ email, password }) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
-        signInWithEmailAndPassword(auth, email, password).catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-        });
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            if (userCredential?.user?.uid) {
+              dispatch(
+                loginUser({
+                  uid: userCredential.user.uid,
+                  displayName: userCredential.user.displayName,
+                  email: userCredential.user.email,
+                })
+              );
+              dispatch(setLoading(false));
+            } else {
+              console.log("no user");
+            }
+          })
+          .then(() => {
+            router.push("/courses");
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+          });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -104,4 +128,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default withoutAuth(Page);
